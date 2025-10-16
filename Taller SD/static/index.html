@@ -66,10 +66,7 @@
       button[type="submit"]:hover { filter: brightness(1.03); }
       button[type="submit"]:active { transform: translateY(1px); }
 
-      #try-ex {
-        background: #fff; color: var(--pink-600); border: 1px solid var(--pink-400);
-      }
-      #try-ex:hover { background: #fff7fb; }
+      
 
       .result { margin-top: 1rem; font-weight: 700; color: var(--pink-600); }
       .error { color: var(--error); font-weight: 700; }
@@ -103,7 +100,6 @@
 
         <div class="actions">
           <button type="submit">Calcular</button>
-          <button type="button" id="try-ex">Probar ejemplo</button>
         </div>
       </form>
 
@@ -119,7 +115,7 @@
       const opSel = document.getElementById('op');
       const aInp = document.getElementById('a');
       const bInp = document.getElementById('b');
-      const tryBtn = document.getElementById('try-ex');
+      
 
       function showError(message) {
         err.style.display = 'block';
@@ -157,12 +153,7 @@
         }
       });
 
-      tryBtn.addEventListener('click', async () => {
-        opSel.value = 'add';
-        aInp.value = '3';
-        bInp.value = '4';
-        form.requestSubmit();
-      });
+      
     </script>
   </body>
   </html>
