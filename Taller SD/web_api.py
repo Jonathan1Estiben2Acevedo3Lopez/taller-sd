@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 # Reuse existing CalculatorService from the Pyro5 implementation
 from calculator import CalculatorService
@@ -74,3 +75,6 @@ def divide_get(a: float, b: float):
         return {"result": calc.divide(a, b)}
     except ZeroDivisionError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+# Simple static UI mounted at /ui (serves static/index.html)
+app.mount("/ui", StaticFiles(directory="static", html=True), name="ui")

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CalculatorService — UI</title>
+    <style>
+      :root { color-scheme: light dark; }
+      body { font-family: system-ui, sans-serif; margin: 2rem; }
+      .card { max-width: 520px; border: 1px solid #ccc; border-radius: 8px; padding: 1rem; }
+      label { display: block; margin-top: .75rem; }
+      input, select, button { font-size: 1rem; padding: .5rem; }
+      .row { display: flex; gap: .5rem; align-items: center; }
+      .row > * { flex: 1; }
+      .actions { margin-top: 1rem; display: flex; gap: .5rem; }
+      .result { margin-top: 1rem; font-weight: 600; }
+      .error { color: #b00020; font-weight: 600; }
+      small.muted { color: #666; }
+    </style>
+  </head>
+  <body>
+    <h1>CalculatorService — UI</h1>
+    <div class="card">
+      <form id="calc-form">
+        <label>
+          Operación
+          <select id="op" aria-label="Operación">
+            <option value="add">Suma</option>
+            <option value="subtract">Resta</option>
+            <option value="multiply">Multiplicación</option>
+            <option value="divide">División</option>
+          </select>
+        </label>
+
+        <div class="row">
+          <label>
+            A
+            <input id="a" type="number" step="any" value="3" required />
+          </label>
+          <label>
+            B
+            <input id="b" type="number" step="any" value="4" required />
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="submit">Calcular</button>
+          <button type="button" id="try-ex">Probar ejemplo</button>
+        </div>
+      </form>
+
+      <div id="out" class="result" role="status" aria-live="polite"></div>
+      <div id="err" class="error" role="alert" style="display:none"></div>
+      <div style="margin-top: .5rem">
+        <small class="muted">API docs: <a href="/docs" target="_blank" rel="noreferrer">/docs</a></small>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById('calc-form');
+      const out = document.getElementById('out');
+      const err = document.getElementById('err');
+      const opSel = document.getElementById('op');
+      const aInp = document.getElementById('a');
+      const bInp = document.getElementById('b');
+      const tryBtn = document.getElementById('try-ex');
+
+      function showError(message) {
+        err.style.display = 'block';
+        err.textContent = message;
+        out.textContent = '';
+      }
+
+      function showResult(value) {
+        err.style.display = 'none';
+        err.textContent = '';
+        out.textContent = `Resultado: ${value}`;
+      }
+
+      async function callApi(op, a, b) {
+        const url = `/${op}?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`;
+        const res = await fetch(url, { method: 'GET' });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          const msg = (data && data.detail) ? data.detail : `HTTP ${res.status}`;
+          throw new Error(msg);
+        }
+        return data.result;
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const op = opSel.value;
+        const a = aInp.value;
+        const b = bInp.value;
+        try {
+          const result = await callApi(op, a, b);
+          showResult(result);
+        } catch (ex) {
+          showError(ex.message || 'Error desconocido');
+        }
+      });
+
+      tryBtn.addEventListener('click', async () => {
+        opSel.value = 'add';
+        aInp.value = '3';
+        bInp.value = '4';
+        form.requestSubmit();
+      });
+    </script>
+  </body>
+  </html>
+
