@@ -5,17 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>CalculatorService — UI</title>
     <style>
-      :root { color-scheme: light dark; }
-      body { font-family: system-ui, sans-serif; margin: 2rem; }
-      .card { max-width: 520px; border: 1px solid #ccc; border-radius: 8px; padding: 1rem; }
-      label { display: block; margin-top: .75rem; }
-      input, select, button { font-size: 1rem; padding: .5rem; }
-      .row { display: flex; gap: .5rem; align-items: center; }
+      :root {
+        color-scheme: light dark;
+        --pink-50: #fff5f8;
+        --pink-100: #ffeef7;
+        --pink-300: #f8bbd0;
+        --pink-400: #f48fb1;
+        --pink-500: #ec407a;
+        --pink-600: #d81b60;
+        --text: #4a2a3a;
+        --muted: #856071;
+        --error: #c2185b;
+        --card: #ffffff;
+        --border: var(--pink-300);
+        --focus: #ff80ab;
+      }
+
+      html, body { height: 100%; }
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        margin: 0;
+        padding: 2rem;
+        background: linear-gradient(180deg, var(--pink-50), var(--pink-100));
+        color: var(--text);
+      }
+
+      h1 {
+        margin: 0 0 1rem;
+        font-weight: 800;
+        letter-spacing: .2px;
+      }
+      h1::after { content: " \2661"; color: var(--pink-500); }
+
+      .card {
+        max-width: 560px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 1.25rem;
+        background: var(--card);
+        box-shadow: 0 10px 30px rgba(216, 27, 96, 0.08);
+      }
+
+      label { display: block; margin-top: .75rem; font-weight: 600; }
+      input, select, button {
+        font-size: 1rem; padding: .6rem .75rem; border-radius: 12px;
+        border: 1px solid var(--pink-300); outline: none; background: #fff; color: var(--text);
+      }
+      input:focus, select:focus { box-shadow: 0 0 0 3px var(--focus); border-color: var(--pink-500); }
+
+      .row { display: flex; gap: .75rem; align-items: center; }
       .row > * { flex: 1; }
-      .actions { margin-top: 1rem; display: flex; gap: .5rem; }
-      .result { margin-top: 1rem; font-weight: 600; }
-      .error { color: #b00020; font-weight: 600; }
-      small.muted { color: #666; }
+
+      .actions { margin-top: 1rem; display: flex; gap: .75rem; }
+      button { cursor: pointer; }
+      button[type="submit"] {
+        background: linear-gradient(135deg, var(--pink-500), var(--pink-600));
+        color: #fff; border: 0; box-shadow: 0 6px 16px rgba(216, 27, 96, 0.25);
+        transition: transform .05s ease, filter .15s ease;
+      }
+      button[type="submit"]:hover { filter: brightness(1.03); }
+      button[type="submit"]:active { transform: translateY(1px); }
+
+      #try-ex {
+        background: #fff; color: var(--pink-600); border: 1px solid var(--pink-400);
+      }
+      #try-ex:hover { background: #fff7fb; }
+
+      .result { margin-top: 1rem; font-weight: 700; color: var(--pink-600); }
+      .error { color: var(--error); font-weight: 700; }
+      small.muted { color: var(--muted); }
     </style>
   </head>
   <body>
@@ -108,4 +166,3 @@
     </script>
   </body>
   </html>
-
