@@ -34,14 +34,30 @@ def add(inp: OpIn):
     return {"result": calc.add(inp.a, inp.b)}
 
 
+# URL-friendly endpoints (GET with query params)
+@app.get("/add")
+def add_get(a: float, b: float):
+    return {"result": calc.add(a, b)}
+
+
 @app.post("/subtract")
 def subtract(inp: OpIn):
     return {"result": calc.subtract(inp.a, inp.b)}
 
 
+@app.get("/subtract")
+def subtract_get(a: float, b: float):
+    return {"result": calc.subtract(a, b)}
+
+
 @app.post("/multiply")
 def multiply(inp: OpIn):
     return {"result": calc.multiply(inp.a, inp.b)}
+
+
+@app.get("/multiply")
+def multiply_get(a: float, b: float):
+    return {"result": calc.multiply(a, b)}
 
 
 @app.post("/divide")
@@ -51,3 +67,10 @@ def divide(inp: OpIn):
     except ZeroDivisionError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+
+@app.get("/divide")
+def divide_get(a: float, b: float):
+    try:
+        return {"result": calc.divide(a, b)}
+    except ZeroDivisionError as e:
+        raise HTTPException(status_code=400, detail=str(e))
